@@ -1,92 +1,190 @@
-/*
- * ArduinoNunchuk.h - Improved Wii Nunchuk library for Arduino
- *
- * Copyright 2011-2013 Gabriel Bianconi, http://www.gabrielbianconi.com/
- *
- * Project URL: http://www.gabrielbianconi.com/projects/arduinonunchuk/
- *
- * Based on the following resources:
- *   http://www.windmeadow.com/node/42
- *   http://todbot.com/blog/2008/02/18/wiichuck-wii-nunchuck-adapter-available/
- *   http://wiibrew.org/wiki/Wiimote/Extension_Controllers
- *
- */
 
 #ifndef ArduinoNunchuk_H
 #define ArduinoNunchuk_H
 
 #include <Arduino.h>
-
-typedef struct  {
-    int analogX;
-    int analogY;
-    int accelX;
-    int accelY;
-    int accelZ;
-    int zButton;
-    int cButton;
-} NunchukData;
-
+#include <Wire.h>
 class ArduinoNunchuk
 {
-  public:
+  public:  
+    String newX = "";
+    String newY = "";
+    String newC = "";
+    String newZ = "";
+    bool debugIt = false;
+    
+    void init() {
+      Wire.begin();
+      _sendByte(0x55, 0xF0);
+      _sendByte(0x00, 0xFB);     
+      timeout = millis() + 100; // Wait before calling first update
+    }
+
+    void update() {
+      int count = 0;
+      int values[6];
+      lastX = xDirection;
+      lastY = yDirection;
+      lastC = cButton;
+      lastZ = zButton;
+      newC = "";
+      newX = "";
+      newY = "";
+      newZ = "";
+      
+      if (millis() > timeout) { // Don't call too often      
+         timeout = millis() + 100;  
+      
+         Wire.requestFrom(0x52, 6);  //0x52 is the IIC address of the nunchuk
+         while(Wire.available())
+         {
+           values[count] = Wire.read();
+           count++;
+         }
+         // Read the nunchuk values
+         analogX = values[0];
+         analogY = values[1];
+         accelX = (values[2] << 2) | ((values[5] >> 2) & 3);
+         accelY = (values[3] << 2) | ((values[5] >> 4) & 3);
+         accelZ = (values[4] << 2) | ((values[5] >> 6) & 3);
+         zButton = !((values[5] >> 0) & 1);
+         cButton = !((values[5] >> 1) & 1);
+         _sendByte(0x00, 0x00);
+    
+         xDirection = 0; // Initialized to release
+         if (analogX < 50) { 
+           xDirection = 1; // Left 
+         } else if (analogX > 200) {
+           xDirection = 2; // Right
+         }
+         
+         yDirection = 0; // Initialized to release
+         if (analogY < 50) {
+           yDirection = 2; // Down
+         } else if (analogY > 200) { 
+           yDirection = 1; // Up
+         }
+
+         newX = "";  
+         if (ready) {          
+            if (lastX != xDirection) {
+              if (xDirection == 0) { 
+                newX = "RELEASED";
+              } else if (xDirection == 1) { 
+                newX = "LEFT";
+              } else if (xDirection == 2) { 
+                newX = "RIGHT";
+              }
+              // showData();
+              if (debugIt) { 
+                Serial.print ( "X Direction changed to \"" );
+                Serial.print ( newX );
+                Serial.println ( "\"" );
+              }  
+            }             
+         }   
+         
+         if (ready) { 
+            newY = "";
+            if (lastY != yDirection) {
+              if (yDirection == 0) { 
+                newY = "RELEASED";
+              } else if (yDirection == 1) { 
+                newY = "UP";
+              } else if (yDirection == 2) { 
+                newY = "DOWN";
+              }
+              if (debugIt) { 
+                Serial.print ( "Y Direction changed to \"" );
+                Serial.print ( newY );
+                Serial.println ( "\"" );
+              }  
+            }             
+         }   
+
+         if (ready) {          
+            newC = "";
+            if (lastC != cButton) { 
+              if (cButton == 1) { 
+                 newC = "PRESSED";
+              } else { 
+                 newC = "RELEASED";
+              } 
+              if (debugIt) {
+                 Serial.print ( "C button changed to \"" );
+                 Serial.print ( newC );
+                 Serial.println ( "\"" );
+              }   
+            }
+         }
+         
+         newZ = "";
+         if (lastZ != zButton) {
+           if (zButton == 1) { 
+             newZ = "PRESSED";
+           } else { 
+             newZ = "RELEASED";
+           } 
+           if (ready && debugIt) { 
+              Serial.print ( "Z button changed to \"" );
+              Serial.print ( newZ );
+              Serial.println ( "\"" );
+           }   
+           if (newZ == "RELEASED") {
+             ready = true;
+           }
+         }         
+      }   
+    }  
+    
+    void showData() {
+         Serial.print ( "[x,y,c,z]: [" );
+         Serial.print ( analogX );
+         Serial.print ( "," );
+         Serial.print ( analogY );
+         Serial.print ( "," ); 
+         Serial.print ( cButton );
+         Serial.print ( "," );
+         Serial.print ( zButton );
+         Serial.print ( "], [xDirection, yDirection]: [" );
+         Serial.print ( xDirection );
+         Serial.print ("," );
+         Serial.print ( yDirection );
+         Serial.println ( "]" );         
+    }
+    
+    // Check for a joystick change in the x and y direction 
+    bool joystickReleased () { 
+       return ((lastX == 0) && (lastY == 0));
+    }  
+    
+    void _sendByte(byte data, byte location) {
+      Wire.beginTransmission(0x52);  // 0x52 = IIC address of nunchuk
+      Wire.write(location);
+      Wire.write(data);
+      Wire.endTransmission();
+      delay(10);
+    }
+
+
+  private:
+    unsigned long timeout = 0;
+    bool ready = false;
     int analogX = 0;
     int analogY = 0;
     int accelX = 0;
     int accelY = 0;
     int accelZ = 0;
-    int zButton = 0;
-    int cButton = 0;
-
-    void init();
-    void update();
     
-    bool xChanged (int & value ) {
-       bool changed = false;
-       if (abs(analogX - lastAnalogX) > 10) {
-          lastAnalogX = analogX;     
-          changed = true;
-          value = analogX;
-       }
-       return changed;
-    }   
+    int lastC      = 0; // 0 = Released, 1 = Pressed
+    int lastZ      = 0; // 0 = Released, 1 = Pressed
+    int cButton    = 0; // 0 = Released, 1 = Pressed
+    int zButton    = 0; // 0 = Released, 1 = Pressed
+    int xDirection = 0; // 0 = Released, 1 = Left, 2 = Right
+    int lastX      = 0; // 0 = Released, 1 = Left, 2 = Right
+    int yDirection = 0; // 0 = Released, 1 = Left, 2 = Right  
+    int lastY      = 0; // 0 = Released, 1 = Up, 2 = Right
     
-    bool yChanged (int & value ) {
-       bool changed = false;
-       if (abs(analogY - lastAnalogY) > 10) {
-          lastAnalogY = analogY;     
-          changed = true;
-          value = analogY;
-       }
-       return changed;
-    }   
-    
-    bool cButtonChanged ( int & value ) {
-       bool changed = false;
-       if (cButton != lastCButton) {
-          lastCButton = cButton;
-          changed = true;
-          value = cButton;
-       }        
-       return changed;
-    }
-    
-    bool zButtonChanged ( int & value ) {
-       bool changed = false;
-       if (zButton != lastZButton) {
-          lastZButton = zButton;
-          changed = true;
-          value = zButton;
-       }        
-       return changed;
-    }    
-    int read (bool & changeOccured, bool & fullSpeed); 
-  private:
-    void _sendByte(byte data, byte location);
-    int lastCButton = 0;
-    int lastZButton = 0;
-    int lastAnalogX = 0;
-    int lastAnalogY = 0;
 };
 
 #endif
