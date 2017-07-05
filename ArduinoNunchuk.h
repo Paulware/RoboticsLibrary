@@ -27,6 +27,7 @@ class ArduinoNunchuk
       lastY = yDirection;
       lastC = cButton;
       lastZ = zButton;
+      lastReleased = released;
       newC = "";
       newX = "";
       newY = "";
@@ -155,7 +156,18 @@ class ArduinoNunchuk
     
     // Check for a joystick change in the x and y direction 
     bool joystickReleased () { 
-       return ((lastX == 0) && (lastY == 0));
+       bool rel = false;
+       if ((lastX == 0) && (lastY == 0)) {
+         released = 1;
+       } else {
+         released = 0;
+       }
+       if (lastReleased != released) { // released has changed
+         if (released == 1) {
+            rel = true;
+         }
+       }
+       return rel;
     }  
     
     void _sendByte(byte data, byte location) {
@@ -176,14 +188,16 @@ class ArduinoNunchuk
     int accelY = 0;
     int accelZ = 0;
     
-    int lastC      = 0; // 0 = Released, 1 = Pressed
-    int lastZ      = 0; // 0 = Released, 1 = Pressed
-    int cButton    = 0; // 0 = Released, 1 = Pressed
-    int zButton    = 0; // 0 = Released, 1 = Pressed
-    int xDirection = 0; // 0 = Released, 1 = Left, 2 = Right
-    int lastX      = 0; // 0 = Released, 1 = Left, 2 = Right
-    int yDirection = 0; // 0 = Released, 1 = Left, 2 = Right  
-    int lastY      = 0; // 0 = Released, 1 = Up, 2 = Right
+    int lastC        = 0; // 0 = Released, 1 = Pressed
+    int lastZ        = 0; // 0 = Released, 1 = Pressed
+    int cButton      = 0; // 0 = Released, 1 = Pressed
+    int zButton      = 0; // 0 = Released, 1 = Pressed
+    int xDirection   = 0; // 0 = Released, 1 = Left, 2 = Right
+    int lastX        = 0; // 0 = Released, 1 = Left, 2 = Right
+    int yDirection   = 0; // 0 = Released, 1 = Left, 2 = Right  
+    int lastY        = 0; // 0 = Released, 1 = Up, 2 = Right
+    int lastReleased = 0; // 0 = Not Released, 1 = Released 
+    int released     = 0; 
     
 };
 
