@@ -5,8 +5,8 @@
 #define OLED_RESET 4
 SSD1306 display(OLED_RESET);
 
-#if (SSD1306_LCDHEIGHT != 32)
-#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#if (SSD1306_LCDHEIGHT != 64)
+#error("Height incorrect, please fix SSD1306.h!");
 #endif
 
 void setup()

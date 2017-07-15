@@ -41,7 +41,9 @@ This is a library for our Monochrome OLEDs based on SSD1306 drivers
 #define SSD1306_I2C_ADDRESS   0x3C 
 #define SSD1306_128_32
 #define SSD1306_LCDWIDTH      128
-#define SSD1306_LCDHEIGHT      32
+
+#define SSD1306_LCDHEIGHT      64
+//#define SSD1306_LCDHEIGHT      32
 
 
 #define SSD1306_SETCONTRAST 0x81

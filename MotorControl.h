@@ -69,9 +69,9 @@ public:
      if (spd == 0) {
        clearPins();
      } else { 
-       if (direction == "reverse") { 
+       if ((direction == "reverse") || (direction == "right")){ 
          reverse (spd);
-       } else { // forward
+       } else { // forward or left
          forward (spd);
        }  
      }
