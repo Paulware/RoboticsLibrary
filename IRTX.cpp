@@ -1,60 +1,13 @@
-#include "IRPipboy.h"
-
-void IRPipboy::init (void)
-{
-  pinMode (irTransmit,OUTPUT); 
-  digitalWrite (irTransmit, 0); // Keep output low when not in use
-}
-
-int IRPipboy::getChecksum (int val1, int val2, int val3) {
-   int checksum = val1;
-   checksum = checksum ^ val2;
-   checksum = checksum ^ val3;
-   return checksum;
-}
-
-// return non-zero if a shot was detected
-int IRPipboy::IRDetected ( void )
-{
-  int shot = 0;
-  unsigned int val; // IR value
-  int check;
-  if (irReady) {
-     val = decodeBits ( 35, true, false);
-     if (val == 0x0018) { // Micro Huan Qi
-        shot = 1; // Huan Qi                
-     } else { 
-        val = decodeBits (18, true, false);    
-        if (val == 0xCCCC) { // Huan Qi
-           shot = 2; 
-        } else {
-           val = decodeBits (15, true, false);    
-           if (val != 0) { 
-              check = getChecksum ((val & 0xF000) / 0x1000, (val & 0xF00) / 0x100, (val & 0xF0) / 0x10);
-              if ((val & 0xF) == check ) { 
-                 shot = (val & 0xFFF0) / 0x10;
-              } else {
-                 Serial.print ( val, HEX );
-                 Serial.print ( " != " );
-                 Serial.println ( check, HEX );
-              }        
-           }         
-         
-        }         
-     } 
-     resetIR(); 
-  }    
-  return shot;
-}
-
+#include "IRTX.h"
+#include "IRPulses.h" 
 /* Leave pin off for time (given in microseconds) */
-void space(int time) {
+void IRTX::space(int time) {
   // Sends an IR space for the specified number of microseconds.
   // A space is no output, so the PWM output is disabled.
   TCCR2A &= ~(_BV(COM2B1)); // Disable pin 3 PWM output
   delayMicroseconds(time * 50);
 }
-void sendRaw(unsigned int uDelay, int index)
+void IRTX::sendRaw(unsigned int uDelay, int index)
 {
 
   if (index & 1)
@@ -65,7 +18,7 @@ void sendRaw(unsigned int uDelay, int index)
   delayMicroseconds(uDelay);
 }
 
-void enableIROut() 
+void IRTX::enableIROut() 
 {
   #define SYSCLOCK 16000000  // main Arduino clock
   int khz = 38;
@@ -109,10 +62,10 @@ void enableIROut()
       You cannot place any Serial.println instructions here.
 	  The program will not run 
 */
-void IRPipboy::fire (void)
+void IRTX::fire (void)
 {
   unsigned int myDelay;  
-  Timer1->stop();
+
   enableIROut();
   for (int i=0; i<4; i++){
     for (int j = 0; j < HUANPULSES; j++) {
@@ -120,23 +73,23 @@ void IRPipboy::fire (void)
       sendRaw (myDelay, j);
     }
   }
-  Timer1->resume();   
+   
 }
 
-void IRPipboy::fireData(void)
+void IRTX::fireData(void)
 {
   unsigned int myDelay;
   Serial.print ("Sh");
-  Timer1->stop();
+  //Timer1->stop();
   enableIROut();
   for (int j = 0; j < 32; j++) {
     myDelay = firePulses[j];
     sendRaw (myDelay, j);
   }
-  Timer1->resume();   
+  //Timer1->resume();   
 }
 
-void IRPipboy::sendFirePulse(void)
+void IRTX::sendFirePulse(void)
 {
   unsigned int myDelay;
   
@@ -238,9 +191,9 @@ void IRPipboy::sendFirePulse(void)
       You cannot place any Serial.println instructions here.
 	  The program will not run 
 */
-void IRPipboy::fireAll (void)
+void IRTX::fireAll (void)
 {
-  Timer1->stop();
+  //Timer1->stop();
   sendFirePulse(); // Update fireTimeout and send pulse
-  Timer1->resume();   
+  //Timer1->resume();   
 }

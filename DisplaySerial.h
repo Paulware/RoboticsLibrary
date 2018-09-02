@@ -4,7 +4,8 @@
 
 class DisplaySerial {
 public:
-  DisplaySerial (uint8_t rxPin, uint8_t ncPin):displaySerial (rxPin, ncPin) {
+  #define NOT_CONNECTED_PIN 20
+  DisplaySerial (uint8_t pin) : displaySerial (NOT_CONNECTED_PIN,pin) {
     displaySerial.begin (9600);
     clearScreen();
   }; 
@@ -38,6 +39,12 @@ public:
     }  
   };
   
+  void printString (String line) {
+    for (int i=0; i<line.length(); i++ ) {       
+       printChar (line.charAt(i));
+    }
+  }
+  
   void printString (char * line) { 
     int len = strlen (line);
     for (int i=0; i<len; i++ ) {
@@ -51,9 +58,7 @@ public:
     y = 0;
   };  
     
-private:
-
-    
+private:  
   SoftwareSerial displaySerial;
   int x;
   int y;

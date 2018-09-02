@@ -1,84 +1,59 @@
-#include <Wire.h>
 #include <ArduinoNunchuk.h>
 #include <IR.h>
 #include <IRPipboy.h>
 #include <TimerOne.h>
 
-#define IRRECEIVEPIN 17
+#define IRRECEIVEPIN 16
 #define IRTRANSMITPIN 3
 
-IRPipboy ir (IRRECEIVEPIN, IRTRANSMITPIN, &Timer1, false);
+IRPipboy ir(IRRECEIVEPIN,IRTRANSMITPIN,&Timer1);
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
 void setup()
 {
   Serial.begin(9600);
   nunchuk.init();
-  Serial.println ( "Ready" ); 
-  pinMode (2,OUTPUT);
-  digitalWrite (2,0); 
+  Serial.println ( "NunChuck IR Ready" ); 
 }
 
 // IR cmds: use 8 bits
-// e q w d for direction
-// k = fire
-// 0 1 2 for speed 
+// w s d a for direction
+// k = fire 
 void loop()
-{
-  int value;
-  int speed;
-  char ch;
-  nunchuk.update();
-  if (nunchuk.cButtonChanged (value)) {
-     Serial.print ( "cButton changed to : " );
-     Serial.println ( value );
-     ir.createFireSequence ('k');
-     ir.fireData();     
-  }
-  if (nunchuk.zButtonChanged (value)) {
-     Serial.print ( "zButton changed to : " );
-     Serial.println ( value );
-     ir.createFireSequence ('k');
-     ir.fireData();     
-  }
-  if (nunchuk.xChanged(value)) { 
-     Serial.print ( "x changed to : " );
-     Serial.println ( value );
-     // left = x == 1
-     if (value < 100) { // moving to the left
-        speed = (128 - value) / 10;              
-        ch = 'O' + speed;
-     } else if (value > 100) { // moving to the right
-        speed = (value - 128) / 10;
-        ch = ' ' + speed;
-     } else { 
-        ch = ' ';   
-     }    
-     Serial.print ( "Fire: [" );
-     Serial.print ( ch ); 
-     Serial.println ( "]" );
-     ir.createFireSequence(ch);
-     ir.fireData();     
-  }
-  
-  if (nunchuk.yChanged(value)) {
-     Serial.print ( "y changed to : " );
-     Serial.println ( value );
-     if (value > 128) { // moving forward
-        speed = (value - 128) / 10;              
-        ch = '1' + speed;
-     } else if (value < 128) { // moving backward
-        speed = (128 - value) / 10;
-        ch = 'A' + speed;
-     } else { 
-        ch = ' ';   
-     }    
-     Serial.print ( "Fire: [" );
-     Serial.print ( ch ); 
-     Serial.println ( "]" );
-     ir.createFireSequence(ch);
+{ 
+  if (nunchuk.newY == "UP") {
+     Serial.println ( "Forward");
+     ir.createFireSequence('w');
      ir.fireData();      
-     ir.createFireSequence(ch);
-     ir.fireData();     
+  } else if (nunchuk.newY == "DOWN") {
+     Serial.println ( "Reverse");
+     ir.createFireSequence('s');
+     ir.fireData(); 
+  } else if (nunchuk.newX == "LEFT") {
+     Serial.println ( "Go Left");
+     ir.createFireSequence('a');
+     ir.fireData();      
+  } else if (nunchuk.newX == "RIGHT") {
+     Serial.println ( "Go Right");
+     ir.createFireSequence('d');
+     ir.fireData();      
+  } else if (nunchuk.newX == "RELEASED") {
+     Serial.println ( "X Released");
+     ir.createFireSequence('0');
+     ir.fireData();      
+  } else if (nunchuk.newY == "RELEASED") {
+     Serial.println ( "Y Released");
+     ir.createFireSequence('0');
+     ir.fireData();      
+  } else if (nunchuk.newC == "PRESSED") {
+     Serial.println ( "C Button pressed");
+     ir.createFireSequence('k');
+     ir.fireData();      
+  } else if (nunchuk.newZ == "PRESSED") {
+     Serial.println ( "Z Button pressed");
+     ir.createFireSequence('k');
+     ir.fireData();      
   }
+   
+  nunchuk.update();  
 }

@@ -2,40 +2,47 @@
 #define TextStream_h
 
 #include <SoftwareSerial.h>
-class TextStream {
+class TextStream : public SoftwareSerial {
 public:
-  TextStream (SoftwareSerial * _textStream) {
-      textStream = _textStream;
-      textStream->begin (9600);
+  TextStream (int pin) : SoftwareSerial (pin,20) {
+      begin (9600);
   };
   
-  bool ready(void) { 
-     bool rdy = textStream->available();
-     return rdy;
-  }
+  TextStream (int rxPin, int txPin) : SoftwareSerial (rxPin,txPin) {
+      begin (9600);
+  };
   
-  bool available(void) { 
-     return textStream->available();
-  }
-  
-  String read(void) {
-    char ch = lastCh;   
-    if (!hasRead) {
-      ch = textStream->read();
-    }
-    lastCh = ch;
-    hasRead = true;
-    return (String)ch;
-  }    
-      
+  TextStream() : SoftwareSerial (20,20) {
+      useSerial = true;
+  } 
+         
   void update (void) {
-     hasRead = false;
+     //bool debug = false;
+     ch = 0;
+     if (useSerial) {
+        if (Serial.available()) {
+           ch = Serial.read();
+           /*
+           if (debug) {
+              if (ch == 10) { 
+                 Serial.println ( "Ch == LF");            
+              } else if (ch == 13) {
+                 Serial.println ( "Ch == CR");            
+              } else {          
+                 Serial.print ( "Ch =" );
+                 Serial.println (ch);
+              }   
+           }      
+           */           
+        }
+     } else {
+        if (available()) {
+           ch = read();
+        }
+     }      
   };
-    
-private:
-  
-  char lastCh;
-  bool hasRead = false;
-  SoftwareSerial * textStream;  
+  char ch; 
+private:  
+  bool useSerial = false;
 };
 #endif

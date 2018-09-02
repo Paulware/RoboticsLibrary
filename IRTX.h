@@ -1,18 +1,18 @@
-#ifndef IR_Pipboy_h
-#define IR_Pipboy_h
-#include "IR.h"
-#include <TimerOne.h>
+#ifndef IR_TX_h
+#define IR_TX_h
+
+#include <Arduino.h>
+// #include <avr/interrupt.h>
 
 // Off time = 500 microseconds
 #define OFFTIME 500
-class IRPipboy : public IR {
+class IRTX {
 public:
-  // repairRobot is set true if the unit is a repair robot
-  IRPipboy ( int irrcvpin, int irTransmitPin, TimerOne * timer1) : IR (irrcvpin) {
-    Timer1 = timer1;
+  IRTX ( int irTransmitPin)  {
 	   irTransmit = irTransmitPin;
 	   repairRobot = false;
-        
+    pinMode (irTransmit,OUTPUT); 
+    digitalWrite (irTransmit, 0); // Keep output low when not in use        
   }; // constructor
 
   // Fields
@@ -21,11 +21,9 @@ public:
   int fourNibbles[4];
   
   // Methods 
-  void init (void);
   void fire(void);
-  int IRDetected(); 
-  int getChecksum (int val1, int val2, int val3);
     
+  // mac is a hex digit 
   void createFireSequenceChars (char mac1, char mac2, char mac3) {
      unsigned int total = 0;
      total = total + chToHex (mac1);
@@ -37,7 +35,7 @@ public:
   void fireAll (void);  
   void sendFirePulse(void);
   void showNibbles() {
-    Serial.print ( "fourNibbles[] = " );
+    Serial.print ( F("fourNibbles[] = ") );
     for (int i=0; i<4; i++) { 
        if (i==0) {      
          Serial.print ( "{0x" );
@@ -58,6 +56,15 @@ public:
     int bitValue = 0;
     int fourBits[4];
     int nibble;
+    Serial.print ( F("createFirePulse (") );
+    Serial.print (nibble1,HEX );
+    Serial.print ( "," );
+    Serial.print (nibble2,HEX);
+    Serial.print ("," );
+    Serial.print (nibble3,HEX);
+    Serial.print (",");
+    Serial.print (nibble4,HEX);
+    Serial.println ( ")");
     // Create FirePulses based on data address     
     for (int i=0; i<4; i++) {
       if (i == 0) 
@@ -98,6 +105,13 @@ public:
     createFirePulse (0, fourNibbles[0], fourNibbles[1], fourNibbles[2] );
   }
   
+  int getChecksum (int val1, int val2, int val3) {
+     int checksum = val1;
+     checksum = checksum ^ val2;
+     checksum = checksum ^ val3;
+     return checksum;
+  }  
+  
   void createFireSequence (unsigned int data){
     
     fourNibbles[0] = (data & 0xF00) / 0x100;
@@ -109,45 +123,6 @@ public:
     createFirePulse (fourNibbles[0], fourNibbles[1], fourNibbles[2], fourNibbles[3] );
   }
 
-  // return true if a shot (with checksum) was detected
-  unsigned int irValue( void )
-  {
-    unsigned int val; // IR value
-    int check;
-    bool shot = false;
-    if (irReady) {
-       val = decodeBits (15, true, false);    
-       //if (val != 0) { 
-       //   check = getChecksum ((val & 0xF000) / 0x1000, (val & 0xF00) / 0x100, (val & 0xF0) / 0x10);
-       //   if ((val & 0xF) == check ) { 
-       //      shot = true;
-       //   }        
-       //}   
-       resetIR(); 
-    }    
-    return val;
-  }
-  
-  // return true if a shot (with checksum) was detected
-  bool shotDetected ( void )
-  {
-    unsigned int val; // IR value
-    int check;
-    bool shot = false;
-    if (irReady) {
-       val = decodeBits (15, true, false);    
-       if (val != 0) { 
-          check = getChecksum ((val & 0xF000) / 0x1000, (val & 0xF00) / 0x100, (val & 0xF0) / 0x10);
-          if ((val & 0xF) == check ) { 
-             shot = true;
-          }        
-       }   
-       resetIR(); 
-    }    
-    return shot;
-  }
-
-  
   int MACtoHex (char * MAC) { 
     int value = (chToHex(MAC[0]) * 0x100) + (chToHex(MAC[1]) * 0x10) + chToHex(MAC[2]);    
     return value;
@@ -155,11 +130,11 @@ public:
       
   void fireShot() {
     if (millis() < pipFireTimeout) {
-      Serial.println ( "Wait for previous shot to finish" );
+      Serial.println ( F("Wait for previous shot to finish") );
     } else {
       fireData();
       pipFireTimeout = millis() + 600;
-      Serial.println ( "ot" );
+      Serial.println ( F("ot") );
     }
   }
   
@@ -190,15 +165,13 @@ public:
     return value;
   };
   
-  void update() {
-    // do nothing
-  }
-  
 private:
-  TimerOne * Timer1;
   int irTransmit;
   unsigned long pipFireTimeout = 0;
   bool repairRobot;
-  #include "IRPulses.h"    
+  void space(int time);
+  void sendRaw(unsigned int uDelay, int index);
+  void enableIROut();
+  
 };
 #endif

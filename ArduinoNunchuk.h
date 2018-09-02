@@ -18,6 +18,9 @@ class ArduinoNunchuk
       _sendByte(0x55, 0xF0);
       _sendByte(0x00, 0xFB);     
       timeout = millis() + 100; // Wait before calling first update
+      // For some strange reason, a z button event always shows up on startup.
+      // This timeout will allow us to ignore values until time has elapsed
+      ignoreTimeout = millis() + 500; 
     }
 
     void update() {
@@ -33,7 +36,7 @@ class ArduinoNunchuk
       newY = "";
       newZ = "";
       
-      if (millis() > timeout) { // Don't call too often      
+      if ((millis() > timeout) && (timeout != 0)) { // Don't call too often      
          timeout = millis() + 100;  
       
          Wire.requestFrom(0x52, 6);  //0x52 is the IIC address of the nunchuk
@@ -50,7 +53,8 @@ class ArduinoNunchuk
          accelZ = (values[4] << 2) | ((values[5] >> 6) & 3);
          zButton = !((values[5] >> 0) & 1);
          cButton = !((values[5] >> 1) & 1);
-         _sendByte(0x00, 0x00);
+         
+         _sendByte(0x00, 0x00);  
     
          xDirection = 0; // Initialized to release
          if (analogX < 50) { 
@@ -66,75 +70,69 @@ class ArduinoNunchuk
            yDirection = 1; // Up
          }
 
-         newX = "";  
-         if (ready) {          
+         if ((millis() > ignoreTimeout) && (ignoreTimeout != 0)) { 
+            newX = "";           
             if (lastX != xDirection) {
-              if (xDirection == 0) { 
-                newX = "RELEASED";
-              } else if (xDirection == 1) { 
-                newX = "LEFT";
-              } else if (xDirection == 2) { 
-                newX = "RIGHT";
-              }
-              // showData();
-              if (debugIt) { 
-                Serial.print ( "X Direction changed to \"" );
-                Serial.print ( newX );
-                Serial.println ( "\"" );
-              }  
-            }             
-         }   
-         
-         if (ready) { 
+               if (xDirection == 0) { 
+                  newX = "RELEASED";
+               } else if (xDirection == 1) { 
+                  newX = "LEFT";
+               } else if (xDirection == 2) { 
+                  newX = "RIGHT";
+               }
+               // showData();
+               if (debugIt) { 
+                  Serial.print ( "X Direction changed to \"" );
+                  Serial.print ( newX );
+                  Serial.println ( "\"" );
+               }  
+            }              
+            
             newY = "";
             if (lastY != yDirection) {
-              if (yDirection == 0) { 
-                newY = "RELEASED";
-              } else if (yDirection == 1) { 
-                newY = "UP";
-              } else if (yDirection == 2) { 
-                newY = "DOWN";
-              }
-              if (debugIt) { 
-                Serial.print ( "Y Direction changed to \"" );
-                Serial.print ( newY );
-                Serial.println ( "\"" );
-              }  
+               if (yDirection == 0) { 
+                  newY = "RELEASED";
+               } else if (yDirection == 1) { 
+                  newY = "UP";
+               } else if (yDirection == 2) { 
+                  newY = "DOWN";
+               }
+               if (debugIt) { 
+                  Serial.print ( "Y Direction changed to \"" );
+                  Serial.print ( newY );
+                  Serial.println ( "\"" );
+               }  
             }             
-         }   
-
-         if (ready) {          
+          
             newC = "";
             if (lastC != cButton) { 
-              if (cButton == 1) { 
-                 newC = "PRESSED";
+               if (cButton == 1) { 
+                  newC = "PRESSED";
+               } else { 
+                  newC = "RELEASED";
+               } 
+               if (debugIt) {
+                  Serial.print ( "C button changed to \"" );
+                  Serial.print ( newC );
+                  Serial.println ( "\"" );
+               }   
+            }
+ 
+            
+            newZ = "";
+            if (lastZ != zButton) {
+              if (zButton == 1) { 
+                newZ = "PRESSED";
               } else { 
-                 newC = "RELEASED";
+                newZ = "RELEASED";
               } 
-              if (debugIt) {
-                 Serial.print ( "C button changed to \"" );
-                 Serial.print ( newC );
+              if (debugIt) { 
+                 Serial.print ( "Z button changed to \"" );
+                 Serial.print ( newZ );
                  Serial.println ( "\"" );
               }   
-            }
-         }
-         
-         newZ = "";
-         if (lastZ != zButton) {
-           if (zButton == 1) { 
-             newZ = "PRESSED";
-           } else { 
-             newZ = "RELEASED";
-           } 
-           if (ready && debugIt) { 
-              Serial.print ( "Z button changed to \"" );
-              Serial.print ( newZ );
-              Serial.println ( "\"" );
-           }   
-           if (newZ == "RELEASED") {
-             ready = true;
-           }
-         }         
+            }         
+         }   
       }   
     }  
     
@@ -181,7 +179,7 @@ class ArduinoNunchuk
 
   private:
     unsigned long timeout = 0;
-    bool ready = false;
+    unsigned long ignoreTimeout = 0;
     int analogX = 0;
     int analogY = 0;
     int accelX = 0;

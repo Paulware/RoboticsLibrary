@@ -1,6 +1,6 @@
 #ifndef Piezo_h
 #define Piezo_h
-
+/*
 #define  c3    7634
 #define  d3    6803
 #define  e3    6061
@@ -28,7 +28,7 @@
 #define  c6    955
  
 #define  R     0      // Define a special note, 'R', to represent a rest
-
+*/
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -117,7 +117,352 @@
 #define NOTE_C8  4186
 #define NOTE_CS8 4435
 #define NOTE_D8  4699
-#define NOTE_DS8 4978
+
+const PROGMEM uint16_t jamesMelody[] = {
+NOTE_G4,NOTE_G4,0,NOTE_G4,NOTE_G4,0,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_G4,
+
+   NOTE_B3,NOTE_G3,NOTE_C4,NOTE_G3,NOTE_CS4,NOTE_G3,NOTE_C4,NOTE_G3,NOTE_B3,NOTE_G3,NOTE_C4,NOTE_G3,NOTE_CS4,NOTE_G3,NOTE_C4,NOTE_G3,
+
+   NOTE_E4,NOTE_F4,NOTE_F4,NOTE_F4,NOTE_F4,NOTE_E4,NOTE_E4,NOTE_E4,
+
+   NOTE_E4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_E4,NOTE_E4,NOTE_E4,
+
+   //Introduction
+
+  NOTE_E4,NOTE_F4,NOTE_F4,NOTE_F4,NOTE_F4,NOTE_E4,NOTE_E4,NOTE_E4,
+
+  NOTE_E4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_E4,NOTE_E4,NOTE_E4,
+
+  NOTE_E4,NOTE_F4,NOTE_F4,NOTE_F4,NOTE_F4,NOTE_E4,NOTE_E4,NOTE_E4,
+
+  NOTE_E4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_G4,NOTE_E4,NOTE_E4,NOTE_E4,
+
+  NOTE_DS5,NOTE_D5,NOTE_B4,NOTE_A4,NOTE_B4,
+
+  NOTE_E4,NOTE_G4,NOTE_DS5,NOTE_D5,NOTE_G4,NOTE_B4,
+
+  NOTE_B4,NOTE_FS5,NOTE_F5,NOTE_B4,NOTE_D5,NOTE_AS5,
+
+  NOTE_A5,NOTE_F5,NOTE_A5,NOTE_DS6,NOTE_D6 
+ 
+};
+
+const PROGMEM uint16_t jamesTempo []  = {
+  8, 8, 2, 8, 8, 2,16, 8,16, 8,
+  8, 2, 4, 2, 4, 2, 4, 2, 4, 2,
+  4, 2, 4, 2, 4, 2, 4, 8,16,16,
+  8, 4, 8, 8, 8, 8,16,16, 8, 4,
+  8, 8, 8, 8,16,16, 8, 4, 8, 8,
+  8, 8,16,16, 8, 4, 8, 8, 8, 8,
+ 16,16, 8, 4, 8, 8, 8, 8,16,16,
+  8, 4, 8, 8, 8, 8, 2, 8, 8, 1,
+  8, 4, 8, 4, 8, 8, 8, 8, 4, 8,
+  4, 8, 4, 8, 4, 8, 3 
+};
+
+const PROGMEM uint16_t tetrisMelody[] = {
+  NOTE_E5, NOTE_E3, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_C5,
+  NOTE_B4, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_C5, NOTE_E5, NOTE_A3, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_C5, NOTE_D5, NOTE_E3, NOTE_E5,
+  NOTE_E3, NOTE_C5, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_B2,
+  NOTE_C3, NOTE_D3, NOTE_D5, NOTE_F5, NOTE_A5, NOTE_C5, NOTE_C5, NOTE_G5,
+  NOTE_F5, NOTE_E5, NOTE_C3, 0, NOTE_C5, NOTE_E5, NOTE_A4, NOTE_G4, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_G4, NOTE_E5,
+  NOTE_G4, NOTE_C5, NOTE_E4, NOTE_A4, NOTE_E3, NOTE_A4, 0,
+  NOTE_E5, NOTE_E3, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_C5,
+  NOTE_B4, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_C5, NOTE_E5, NOTE_A3, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_C5, NOTE_D5, NOTE_E3, NOTE_E5,
+  NOTE_E3, NOTE_C5, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_B2,
+  NOTE_C3, NOTE_D3, NOTE_D5, NOTE_F5, NOTE_A5, NOTE_C5, NOTE_C5, NOTE_G5,
+  NOTE_F5, NOTE_E5, NOTE_C3, 0, NOTE_C5, NOTE_E5, NOTE_A4, NOTE_G4, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_G4, NOTE_E5,
+  NOTE_G4, NOTE_C5, NOTE_E4, NOTE_A4, NOTE_E3, NOTE_A4, 0,
+  NOTE_E4, NOTE_E3, NOTE_A2, NOTE_E3, NOTE_C4, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_D4, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_B3, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_C4, NOTE_E3, NOTE_A2, NOTE_E3, NOTE_A3, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_GS3, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_B3, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_E4, NOTE_E3, NOTE_A2, NOTE_E3, NOTE_C4, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_D4, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_B3, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_C4, NOTE_E3, NOTE_E4, NOTE_E3, NOTE_A4, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_GS4, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_E5, NOTE_E3, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_C5,
+  NOTE_B4, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_C5, NOTE_E5, NOTE_A3, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_C5, NOTE_D5, NOTE_E3, NOTE_E5,
+  NOTE_E3, NOTE_C5, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_B2,
+  NOTE_C3, NOTE_D3, NOTE_D5, NOTE_F5, NOTE_A5, NOTE_C5, NOTE_C5, NOTE_G5,
+  NOTE_F5, NOTE_E5, NOTE_C3, 0, NOTE_C5, NOTE_E5, NOTE_A4, NOTE_G4, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_G4, NOTE_E5,
+  NOTE_G4, NOTE_C5, NOTE_E4, NOTE_A4, NOTE_E3, NOTE_A4, 0,
+  NOTE_E5, NOTE_E3, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_C5,
+  NOTE_B4, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_C5, NOTE_E5, NOTE_A3, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_C5, NOTE_D5, NOTE_E3, NOTE_E5,
+  NOTE_E3, NOTE_C5, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_A4, NOTE_A3, NOTE_B2,
+  NOTE_C3, NOTE_D3, NOTE_D5, NOTE_F5, NOTE_A5, NOTE_C5, NOTE_C5, NOTE_G5,
+  NOTE_F5, NOTE_E5, NOTE_C3, 0, NOTE_C5, NOTE_E5, NOTE_A4, NOTE_G4, NOTE_D5,
+  NOTE_C5, NOTE_B4, NOTE_E4, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_G4, NOTE_E5,
+  NOTE_G4, NOTE_C5, NOTE_E4, NOTE_A4, NOTE_E3, NOTE_A4, 0,
+  NOTE_E4, NOTE_E3, NOTE_A2, NOTE_E3, NOTE_C4, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_D4, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_B3, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_C4, NOTE_E3, NOTE_A2, NOTE_E3, NOTE_A3, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_GS3, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_B3, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_E4, NOTE_E3, NOTE_A2, NOTE_E3, NOTE_C4, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_D4, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_B3, NOTE_E3, NOTE_GS2, NOTE_E3,
+  NOTE_C4, NOTE_E3, NOTE_E4, NOTE_E3, NOTE_A4, NOTE_E3, NOTE_A2, NOTE_E3,
+  NOTE_GS4, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_GS2, NOTE_E3, NOTE_GS2, NOTE_E3 
+}; 
+
+const PROGMEM  uint16_t tetrisTempo []  = { 
+  8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 4, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 4,
+  8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 4, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 4,
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 4, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 4,
+  8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 4, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 4,
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+ 
+};
+
+const PROGMEM uint16_t nyanCatMelody[] = {
+  NOTE_DS5, NOTE_E5, NOTE_FS5, 0, NOTE_B5, NOTE_E5, NOTE_DS5, NOTE_E5, NOTE_FS5, NOTE_B5, NOTE_DS6, NOTE_E6, NOTE_DS6, NOTE_AS5, NOTE_B5, 0,
+  NOTE_FS5, 0, NOTE_DS5, NOTE_E5, NOTE_FS5, 0, NOTE_B5, NOTE_CS6, NOTE_AS5, NOTE_B5, NOTE_CS6, NOTE_E6, NOTE_DS6, NOTE_E6, NOTE_CS6,
+  NOTE_FS4, NOTE_GS4, NOTE_D4, NOTE_DS4, NOTE_FS2, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_CS4, NOTE_B3,
+  NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_D4, NOTE_DS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4,
+  NOTE_FS4, NOTE_GS4, NOTE_D4, NOTE_DS4, NOTE_FS2, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_CS4, NOTE_B3,
+  NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_D4, NOTE_DS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_B3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4,
+  NOTE_B3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_E4, NOTE_DS4, NOTE_CS4, NOTE_B3, NOTE_E3, NOTE_DS3, NOTE_E3, NOTE_FS3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_FS3,
+  NOTE_B3, NOTE_B3, NOTE_AS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4, NOTE_B3, NOTE_AS3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4,
+  NOTE_B3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_E4, NOTE_DS4, NOTE_CS4, NOTE_B3, NOTE_E3, NOTE_DS3, NOTE_E3, NOTE_FS3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_FS3,
+  NOTE_B3, NOTE_B3, NOTE_AS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4, NOTE_B3, NOTE_CS4,
+  NOTE_FS4, NOTE_GS4, NOTE_D4, NOTE_DS4, NOTE_FS2, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_CS4, NOTE_B3,
+  NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_D4, NOTE_DS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4,
+  NOTE_FS4, NOTE_GS4, NOTE_D4, NOTE_DS4, NOTE_FS2, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_CS4, NOTE_B3,
+  NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_D4, NOTE_DS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4,
+  NOTE_D4, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_CS4, NOTE_D4, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_B3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4,
+  NOTE_B3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_E4, NOTE_DS4, NOTE_CS4, NOTE_B3, NOTE_E3, NOTE_DS3, NOTE_E3, NOTE_FS3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_FS3,
+  NOTE_B3, NOTE_B3, NOTE_AS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4, NOTE_B3, NOTE_AS3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4,
+  NOTE_B3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_E4, NOTE_DS4, NOTE_CS4, NOTE_B3, NOTE_E3, NOTE_DS3, NOTE_E3, NOTE_FS3,
+  NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_B3, NOTE_CS4, NOTE_DS4, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_FS3,
+  NOTE_B3, NOTE_B3, NOTE_AS3, NOTE_B3, NOTE_FS3, NOTE_GS3, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_E4, NOTE_FS4, NOTE_B3, NOTE_CS4
+};
+const PROGMEM  uint16_t nyanCatTempo []  = {
+  16,16,16,16,16,16,16,16,16,16,
+  16,16,16,16,16,16,16,16,16,16,
+  16,16, 8,16,16,16,16,16,16,16,
+  16, 8, 8,16,16,16,16,16,16, 8,
+   8, 8, 8,16,16,16,16,16,16,16,
+  16,16,16,16,16,16,16, 8, 8,16,
+  16,16,16,16,16,16,16,16,16,16,
+  16, 8,16,16,16,16,16,16,16,16,
+   8, 8, 8, 8, 8,16,16,16,16,16,
+  16, 8, 8, 8, 8,16,16,16,16,16,
+  // 100
+  16,16,16,16,16,16,16,16,16, 8,
+   8,16,16,16,16,16,16,16,16,16,
+  16,16,16, 8,16,16,16,16,16,16,
+  16,16, 8, 8, 8, 8,16,16, 8,16,
+  16,16,16,16,16,16,16,16,16, 8,
+   8,16,16,16,16,16,16,16,16,16,
+  16,16,16, 8,16,16, 8,16,16,16,
+  16,16,16,16,16,16,16, 8,16,16,
+  16,16,16,16,16,16,16,16, 8, 8,
+   8,16,16, 8,16,16,16,16,16,16,
+  //200 
+  16,16,16,16, 8, 8,16,16,16,16,
+  16,16,16,16,16,16,16,16, 8,16,
+  16, 8,16,16,16,16,16,16,16,16,
+  16,16, 8,16,16,16,16,16,16,16,
+  16,16,16, 8, 8, 8, 8,16,16,16,
+  16,16,16, 8, 8, 8, 8,16,16,16,
+  16,16,16,16,16,16,16,16,16,16,
+  16, 8, 8,16,16,16,16,16,16,16,
+  16,16,16,16,16, 8,16,16,16,16,
+  16,16,16,16, 8, 8, 8, 8, 8,16,
+  //300
+  16,16,16,16,16, 8, 8, 8, 8,16,
+  16,16,16,16,16,16,16,16,16,16,
+  16,16,16, 8, 8,16,16,16,16,16,
+  16,16,16,16,16,16,16, 8,16,16,
+  16,16,16,16,16,16, 8, 8, 8, 8,
+  16,16, 8,16,16,16,16,16,16,16,
+  16,16,16, 8, 8,16,16,16,16,16,
+  16,16,16,16,16,16,16, 8,16,16,
+   8,16,16,16,16,16,16,16,16,16,
+  16, 8,16,16,16,16,16,16,16,16,
+  //400
+  16,16, 8, 8, 8,16,16, 8,16,16,
+  16,16,16,16,16,16,16,16, 8, 8,
+  16,16,16,16,16,16,16,16,16,16,
+  16,16, 8,16,16, 8,16,16,16,16,
+  16,16,16,16,16,16, 8,16,16,16,
+  16,16,16,16,16,16,16,8,8
+}; 
+// Santa Claus is coming to town 
+const PROGMEM  uint16_t jeopardyMelody []  = {
+NOTE_C2, NOTE_F3, NOTE_C3, NOTE_A2,
+	NOTE_C3, NOTE_F3, NOTE_C3,
+	NOTE_C3, NOTE_F3, NOTE_C3, NOTE_F3,
+	NOTE_AS3, NOTE_G3, NOTE_F3, NOTE_E3, NOTE_D3, NOTE_CS3,
+	NOTE_C3, NOTE_F3, NOTE_C3, NOTE_A2, // the same again
+	NOTE_C3, NOTE_F3, NOTE_C3,
+	NOTE_AS3, 0, NOTE_G3, NOTE_F3,
+	NOTE_E3, NOTE_D3, NOTE_CS3, NOTE_C3
+};
+
+const PROGMEM  uint16_t jeopardyTempo []  = {
+ 4,    4,    4,    4,
+	4,    4,          2,
+	4,    4,    4,    4,
+	3,   8, 8, 8, 8, 8,
+	4,    4,    4,    4, // the same again
+	4,    4,          2,
+	4, 8, 8,    4,    4,
+	4,    4,    4,    4,
+	0
+};
+
+// Santa Claus is coming to town 
+const PROGMEM  uint16_t santaMelody []  = {
+  NOTE_G4,
+  NOTE_E4, NOTE_F4, NOTE_G4, NOTE_G4, NOTE_G4,
+  NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, NOTE_C5,
+  NOTE_E4, NOTE_F4, NOTE_G4, NOTE_G4, NOTE_G4,
+  NOTE_A4, NOTE_G4, NOTE_F4, NOTE_F4,
+  NOTE_E4, NOTE_G4, NOTE_C4, NOTE_E4,
+  NOTE_D4, NOTE_F4, NOTE_B3,
+  NOTE_C4
+};
+
+const PROGMEM  uint16_t santaTempo []  = {
+  8,
+  8, 8, 4, 4, 4,
+  8, 8, 4, 4, 4,
+  8, 8, 4, 4, 4,
+  8, 8, 4, 2,
+  4, 4, 4, 4,
+  4, 2, 4,
+  1
+};
+
+// We wish you a merry Christmas
+const PROGMEM  uint16_t merryMelody []  = {
+  NOTE_B3, 
+  NOTE_F4, NOTE_F4, NOTE_G4, NOTE_F4, NOTE_E4,
+  NOTE_D4, NOTE_D4, NOTE_D4,
+  NOTE_G4, NOTE_G4, NOTE_A4, NOTE_G4, NOTE_F4,
+  NOTE_E4, NOTE_E4, NOTE_E4,
+  NOTE_A4, NOTE_A4, NOTE_B4, NOTE_A4, NOTE_G4,
+  NOTE_F4, NOTE_D4, NOTE_B3, NOTE_B3,
+  NOTE_D4, NOTE_G4, NOTE_E4,
+  NOTE_F4
+};
+
+const PROGMEM  uint16_t merryTempo []  = {
+  4,
+  4, 8, 8, 8, 8,
+  4, 4, 4,
+  4, 8, 8, 8, 8,
+  4, 4, 4,
+  4, 8, 8, 8, 8,
+  4, 4, 8, 8,
+  4, 4, 4,
+  2
+};
+
+// jingle bells 
+const PROGMEM  uint16_t jingleMelody []  = 
+  {   
+  NOTE_E5, NOTE_E5, NOTE_E5,
+  NOTE_E5, NOTE_E5, NOTE_E5,
+  NOTE_E5, NOTE_G5, NOTE_C5, NOTE_D5,
+  NOTE_E5,
+  NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,
+  NOTE_F5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_E5,
+  NOTE_E5, NOTE_D5, NOTE_D5, NOTE_E5,
+  NOTE_D5, NOTE_G5};   
+const PROGMEM  uint16_t jingleTempo []  = 
+  {   
+  8, 8, 4, 8, 8, 4, 8, 8,  8,  8, 
+  2, 8, 8, 8, 8, 8, 8, 8, 16, 16, 
+  8, 8, 8, 8, 4, 4};
+
+const PROGMEM  uint16_t shaveMelody []  = 
+  { NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4};   
+  
+const PROGMEM  uint16_t shaveTempo []  = 
+  {8, 16, 16, 8, 8, 4, 8, 8};
+  
+const PROGMEM  uint16_t chargeMelody []  = 
+  { NOTE_C3, NOTE_E3, NOTE_G3, NOTE_G3, 0, NOTE_E3, NOTE_G3};   
+  
+const PROGMEM  uint16_t chargeTempo []  = 
+  {     16,    16,     16,       16,     16,  16,      4}; 
+  
+	 // Melody 1: Star Wars Imperial March
+ const PROGMEM uint16_t starWarsMelody[] = {  
+		NOTE_A4, 0,  NOTE_A4, 0,  NOTE_A4, 0, NOTE_F4, 0, NOTE_C5, 0,  NOTE_A4, 0,  
+		NOTE_F4, 0, NOTE_C5, 0, NOTE_A4, 0,  NOTE_E5, 0, NOTE_E5, 0,  NOTE_E5, 0,  
+		NOTE_F5, 0, NOTE_C5, 0,  NOTE_A4, 0, NOTE_F4, 0, NOTE_C5, 0, NOTE_A4, 0
+	};
+const PROGMEM uint16_t starWarsTempo[]  = {  
+		6,  10,  6,  10, 6,  10,  10, 10, 20, 10, 6, 10, 
+		10, 10, 20,  10, 3,  10,   6, 10,  6, 10, 6, 10, 
+		10, 10, 20,  10, 6,  10, 	10, 10, 20, 10, 3, 10
+	};
+  
+const PROGMEM uint16_t marioMelody [] =  { 
+  NOTE_E7, NOTE_E7, 0, NOTE_E7, 0, NOTE_C7, NOTE_E7, 0,
+  NOTE_G7, 0, 0,  0, NOTE_G6, 0, 0, 0, 
+  NOTE_C7, 0, 0, NOTE_G6, 0, 0, NOTE_E6, 0, 
+  0, NOTE_A6, 0, NOTE_B6, 0, NOTE_AS6, NOTE_A6, 0, 
+
+  NOTE_G6, NOTE_E7, NOTE_G7, NOTE_A7, 0, NOTE_F7, NOTE_G7, 
+  0, NOTE_E7, 0,NOTE_C7, NOTE_D7, NOTE_B6, 0, 0,
+  NOTE_C7, 0, 0, NOTE_G6, 0, 0, NOTE_E6, 0, 
+  0, NOTE_A6, 0, NOTE_B6, 0, NOTE_AS6, NOTE_A6, 0, 
+
+  NOTE_G6, NOTE_E7, NOTE_G7, NOTE_A7, 0, NOTE_F7, NOTE_G7, 
+  0, NOTE_E7, 0,NOTE_C7, NOTE_D7, NOTE_B6, 0, 0,
+  NOTE_E7, NOTE_E7, 0, NOTE_E7, 0, NOTE_C7, NOTE_E7, 0, NOTE_G7
+};   
+     
+//Mario main them tempo
+const PROGMEM  uint16_t marioTempo []  = {
+  12, 12, 12, 12, 12, 12, 12, 12,
+  12, 12, 12, 12, 12, 12, 12, 12, 
+  12, 12, 12, 12, 12, 12, 12, 12, 
+  12, 12, 12, 12, 12, 12, 12, 12, 
+
+  9, 9, 9,
+  12, 12, 12, 12, 12, 12, 12, 12,
+  12, 12, 12, 12, 12, 12, 12, 12,
+  12, 12, 12, 12, 12, 12, 12, 12,
+  12, 12, 12, 12,
+
+  9, 9, 9,
+  12, 12, 12, 12, 12, 12, 12, 12,
+  12, 12, 12, 12, 12, 12, 12, 12, 
+  12, 12, 12, 12, 12
+};  
+   
 
 class Piezo {
 public:
@@ -157,6 +502,20 @@ public:
     }
   }
   
+  void upTone() { 
+     if (currentTone < maxFrequency) { 
+        currentTone = currentTone + 250;
+     }   
+     buzz (piezoPin, currentTone, 100 ); 
+  }
+  
+  void downTone() { 
+     if (currentTone > minFrequency) { 
+       currentTone = currentTone - 250;
+     }  
+     buzz (piezoPin, currentTone, 100 ); 
+  }
+  
   void fireSound () {
     frequency = 1000;
     state = 2;
@@ -171,17 +530,11 @@ public:
     msDuration = millis() + 300;
   };
   
-  void startMarioTheme () {
+  void startSong (int whichSong ) {
+    state = whichSong;
     noteCount = 0;
-    state = 6;
     msDuration = -1;
-  }
-  
-  void startStarWars () {
-    noteCount = 0;
-    state = 7;
-    msDuration = -1;
-  }
+  } 
 
   // PLAY TONE  //
   // Pulse the speaker to play a tone for a particular duration
@@ -213,53 +566,21 @@ public:
     }                                 
   }
   
-  void starWarsTheme() {
-    // Melody 1: Star Wars Imperial March
-    int melody1[] = {  a4, R,  a4, R,  a4, R,  f4, R, c5, R,  a4, R,  f4, R, c5, R, a4, R,  e5, R,  e5, R,  e5, R,  f5, R, c5, R,  g5, R,  f5, R,  c5, R, a4, R};
-    int beats1[]  = {  50, 20, 50, 20, 50, 20, 40, 5, 20, 5,  60, 10, 40, 5, 20, 5, 60, 80, 50, 20, 50, 20, 50, 20, 40, 5, 20, 5,  60, 10, 40, 5,  20, 5, 60, 40};
-     
-    // Melody 2: Star Wars Theme
-    int melody2[] = {  f4,  f4, f4,  a4s,   f5,  d5s,  d5,  c5, a5s, f5, d5s,  d5,  c5, a5s, f5, d5s, d5, d5s,   c5};
-    int beats2[]  = {  21,  21, 21,  128,  128,   21,  21,  21, 128, 64,  21,  21,  21, 128, 64,  21, 21,  21, 128 }; 
-     
-    int MAX_COUNT = sizeof(melody1) / 2; // Melody length, for looping.
-     
-    long tempo = 10000; // Set overall tempo
-     
-    int pause = 1000; // Set length of pause between notes
-     
-    // Initialize core variables
-    int toneM = 0;
-    int beat = 0;
-    long duration  = 0;    
-
-    toneM = melody1[noteCount];
-    beat = beats1[noteCount];   
-    duration = beat * tempo; // Set up timing   
-    playTone(toneM, duration); // A pause between notes
-    delayMicroseconds(pause);
-      
-    noteCount = noteCount + 1;
-    if (noteCount == MAX_COUNT) { 
-       state = 0;
-       Serial.println ( "Done with Star Wars" );
-    }
-  }
+  void noSong() {
+     Serial.print ( "Done with Song" );
+     Serial.println ( state );
+     state = 0; // Done
+     noTone (piezoPin);
+  }  
   
-  void marioTheme() {  
-
-     int noteDuration = 1000 /  tempo[noteCount];     
-     buzz(piezoPin, melody[noteCount],noteDuration);
-           
-     changeFrequency = millis() + (noteDuration * 1.30); 
-       
+  void playNote () {    
+     unsigned int tempo;
+     int noteDuration;
+     tempo = getTempo (noteCount ); // pgm_read_word_near (shaveTempo + noteCount );    
+     noteDuration = 1000 / tempo; 
+     buzz(piezoPin, getNote(noteCount) ,noteDuration);            
+     changeFrequency = millis() + (noteDuration * 1.3 );        
      noteCount = noteCount + 1;
-     if (noteCount == 87) { // Last note has been played
-        Serial.println ( "Done with Mario Theme" );
-        delay (noteDuration * 1.30);
-        state = 0; // Done
-        buzz(piezoPin,0,noteDuration);     
-     }
   }
   
   void computing() {
@@ -322,14 +643,113 @@ public:
           
         case 6: // Mario Theme
           if (millis() > changeFrequency) {
-             marioTheme();
-          }
+             if (noteCount == 87) { // Last note has been played
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          } 
           break;
           
         case 7: // Star Wars Theme
-          starWarsTheme();
+          if (millis() > changeFrequency) {
+             if (noteCount == 36) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }   
           break;          
        
+        case 8: // Shave and a haircut 2 bits
+          if (millis() > changeFrequency) {
+             if (noteCount == 8) {
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;
+          
+        case 9: // Jingle Bells
+          if (millis() > changeFrequency) {
+             if (noteCount == 26) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;
+          
+        case 10: // We wish you a merry christmas
+          if (millis() > changeFrequency) {
+             if (noteCount == 30) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;
+          
+        case 11: // Santa claus is coming to town
+          if (millis() > changeFrequency) {
+             if (noteCount == 28) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break; 
+
+        case 12: // Jeopardy
+          if (millis() > changeFrequency) {
+             if (noteCount == 32) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;         
+
+        case 13: // nyan Cat
+          if (millis() > changeFrequency) {
+             if (noteCount == 459) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break; 
+          
+        case 14: // tetris
+          if (millis() > changeFrequency) {
+             if (noteCount == 459) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;
+          
+        case 15: // James Bond
+          if (millis() > changeFrequency) {
+             if (noteCount == 97) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;         
+          
+        case 16: // Charge
+          if (millis() > changeFrequency) {
+             if (noteCount == 7) { 
+                noSong ();
+             } else {
+                playNote ();
+             }                    
+          }  
+          break;         
         default:        
            break;
      }
@@ -357,68 +777,104 @@ private:
   unsigned long msDuration = -1;
 
   int frequency = minFrequency;
+  int currentTone = minFrequency;
   int step = 1;
   unsigned long changeFrequency = 0;
   
-     int melody[87] = {
-       NOTE_E7, NOTE_E7, 0, NOTE_E7, 
-       0, NOTE_C7, NOTE_E7, 0,
-       NOTE_G7, 0, 0,  0,
-       NOTE_G6, 0, 0, 0, 
+  unsigned int getNote (int noteCount) { 
+     unsigned int value = 0;
 
-       NOTE_C7, 0, 0, NOTE_G6, 
-       0, 0, NOTE_E6, 0, 
-       0, NOTE_A6, 0, NOTE_B6, 
-       0, NOTE_AS6, NOTE_A6, 0, 
-
-       NOTE_G6, NOTE_E7, NOTE_G7, 
-       NOTE_A7, 0, NOTE_F7, NOTE_G7, 
-       0, NOTE_E7, 0,NOTE_C7, 
-       NOTE_D7, NOTE_B6, 0, 0,
-
-       NOTE_C7, 0, 0, NOTE_G6, 
-       0, 0, NOTE_E6, 0, 
-       0, NOTE_A6, 0, NOTE_B6, 
-       0, NOTE_AS6, NOTE_A6, 0, 
-
-       NOTE_G6, NOTE_E7, NOTE_G7, 
-       NOTE_A7, 0, NOTE_F7, NOTE_G7, 
-       0, NOTE_E7, 0,NOTE_C7, 
-       NOTE_D7, NOTE_B6, 0, 0,
-       NOTE_E7, NOTE_E7, 0, NOTE_E7, 
-       0, NOTE_C7, NOTE_E7, 0,
-       NOTE_G7
-     };   
+     switch (state) {
+        case 6: // Mario Theme
+           value = pgm_read_word_near (marioMelody + noteCount );
+           break;
+        case 7: // Star wars theme
+           value = pgm_read_word_near (starWarsMelody + noteCount );
+           break;
+        case 8: // Shave and a haircut 
+           value = pgm_read_word_near (shaveMelody + noteCount );
+           break;
+        case 9: // Jingle Bells
+           value = pgm_read_word_near (jingleMelody + noteCount );
+           break;
+        case 10: // We wish you a merry christmas
+           value = pgm_read_word_near (merryMelody + noteCount );
+           break;
+        case 11: // Santa claus is coming to town
+           value = pgm_read_word_near (santaMelody + noteCount );
+           break;           
+        case 12: // Jeopardy
+           value = pgm_read_word_near (jeopardyMelody + noteCount );
+           break;           
+        case 13: // Nyan Cat
+           value = pgm_read_word_near (nyanCatMelody + noteCount );
+           break;            
+        case 14: // Tetris
+           value = pgm_read_word_near (tetrisMelody + noteCount );
+           break;            
+        case 15: // James Bond
+           value = pgm_read_word_near (jamesMelody + noteCount );
+           break;            
+        case 16: // Charge
+           value = pgm_read_word_near (chargeMelody + noteCount );
+           break;            
+        default:
+           break;
+     }  
      
-     //Mario main them tempo
-     int tempo[87] = {
-       12, 12, 12, 12, 
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-       12, 12, 12, 12, 
-
-       12, 12, 12, 12,
-       12, 12, 12, 12, 
-       12, 12, 12, 12, 
-       12, 12, 12, 12, 
-
-       9, 9, 9,
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-
-       9, 9, 9,
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-       12, 12, 12, 12,
-       12, 12, 12, 12, 
-       12, 12, 12, 12,
-       12
-     };    
+     return value;
+  } 
+  
+  unsigned int getTempo (int noteCount) { 
+     unsigned int value = 0;
+  
+     switch (state) {
+        case 6: // Mario Theme 
+           value = pgm_read_word_near (marioTempo + noteCount );
+           break;
+        case 7: // Star wars theme
+           value = pgm_read_word_near (starWarsTempo + noteCount );
+           break;
+        case 8: // Shave and a haircut 
+           value = pgm_read_word_near (shaveTempo + noteCount );
+           break;
+        case 9: // Jingle Bells 
+           value = pgm_read_word_near (jingleTempo + noteCount );
+           break;
+        case 10: // We wish you a merry christmas
+           value = pgm_read_word_near (merryTempo + noteCount );
+           break;
+        case 11: // Santa claus is coming to town
+           value = pgm_read_word_near (santaTempo + noteCount );
+           break;           
+        case 12: // Jeopardy
+           value = pgm_read_word_near (jeopardyTempo + noteCount );
+           break;           
+        case 13: // Nyan Cat
+           value = pgm_read_word_near (nyanCatTempo + noteCount );
+           break;           
+        case 14: // Tetris
+           value = pgm_read_word_near (tetrisTempo + noteCount );
+           break;           
+        case 15: // James Bond
+           value = pgm_read_word_near (jamesTempo + noteCount );
+           break;  
+        case 16: // Charge
+           value = pgm_read_word_near (chargeTempo + noteCount );
+           break;           
+        default:
+           break;
+     } 
+     
+     return value;
+  } 
+ 
+ 
+     
+    // Melody 2: Star Wars Theme
+	/*
+    int swmelody2[19] = {  f4,  f4, f4,  a4s,   f5,  d5s,  d5,  c5, a5s, f5, d5s,  d5,  c5, a5s, f5, d5s, d5, d5s,   c5};
+    int swbeats2[19]  = {  21,  21, 21,  128,  128,   21,  21,  21, 128, 64,  21,  21,  21, 128, 64,  21, 21,  21, 128 }; 
+	*/
 };
 #endif

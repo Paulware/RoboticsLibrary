@@ -1,4 +1,3 @@
-#include <Wire.h>
 #include <ArduinoNunchuk.h>
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
@@ -13,20 +12,21 @@ void loop()
 {
   int value;
   nunchuk.update();
-  if (nunchuk.cButtonChanged (value)) {
-     Serial.print ( "cButton changed to : " );
-     Serial.println ( value );
-  }
-  if (nunchuk.zButtonChanged (value)) {
-     Serial.print ( "zButton changed to : " );
-     Serial.println ( value );
-  }
-  if (nunchuk.xChanged(value)) { 
-     Serial.print ( "x changed to : " );
-     Serial.println ( value );
-  }
-  if (nunchuk.yChanged(value)) {
-     Serial.print ( "y changed to : " );
-     Serial.println ( value );
+  if (nunchuk.newY == "UP") {
+     Serial.println ( "Forward");     
+  } else if (nunchuk.newY == "DOWN") {
+     Serial.println ( "Reverse");
+  } else if (nunchuk.newX == "LEFT") {
+     Serial.println ( "Go Left");      
+  } else if (nunchuk.newX == "RIGHT") {
+     Serial.println ( "Go Right");      
+  } else if (nunchuk.newX == "RELEASED") {
+     Serial.println ( "X Released");     
+  } else if (nunchuk.newY == "RELEASED") {
+     Serial.println ( "Y Released");     
+  } else if (nunchuk.newC == "PRESSED") {
+     Serial.println ( "C Button pressed");     
+  } else if (nunchuk.newZ == "PRESSED") {
+     Serial.println ( "Z Button pressed");     
   }
 }

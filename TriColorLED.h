@@ -14,9 +14,11 @@
 class TriColorLED {
 public:
   TriColorLED (int greenPin, int bluePin, int redPin) {
+     
      colors[0] = greenPin;
      colors[1] = bluePin;
      colors[2] = redPin;
+     
      for (int i=0; i<3; i++) {
         pinMode (colors[i], OUTPUT);
      }   
@@ -77,26 +79,30 @@ public:
   }
   
   void setColor (int which, unsigned long timeout = -1) {
-     off();
-     cycleTimeout = -1;
-     if (which == PURPLE) { 
-       digitalWrite (colors[BLUE], 0);
-       digitalWrite (colors[RED], 0);
-     } else if (which == YELLOW) { 
-       digitalWrite (colors[GREEN], 0);
-       digitalWrite (colors[RED], 0);
-     } else if (which == BLUEBLUE) { 
-       digitalWrite (colors[GREEN], 0);
-       digitalWrite (colors[BLUE], 0);       
-     } else if (which == WHITE) {
-       digitalWrite (colors[GREEN], 0);
-       digitalWrite (colors[BLUE], 0);       
-       digitalWrite (colors[RED], 0);        
-     } else if (which != OFF) { 
-       digitalWrite (colors[which], 0);
-       colorSelected = which; 
-     }
-     if (timeout != -1) { 
+     if (colorSelected != which) { 
+        off();
+        cycleTimeout = -1;
+        if (which == PURPLE) { 
+          digitalWrite (colors[BLUE], 0);
+          digitalWrite (colors[RED], 0);
+        } else if (which == YELLOW) { 
+          digitalWrite (colors[GREEN], 0);
+          digitalWrite (colors[RED], 0);
+        } else if (which == BLUEBLUE) { 
+          digitalWrite (colors[GREEN], 0);
+          digitalWrite (colors[BLUE], 0);       
+        } else if (which == WHITE) {
+          digitalWrite (colors[GREEN], 0);
+          digitalWrite (colors[BLUE], 0);       
+          digitalWrite (colors[RED], 0);        
+        } else if (which != OFF) { 
+          digitalWrite (colors[which], 0);
+        }
+     }  
+     colorSelected = which;     
+     if (timeout == -1) {
+        lastColor = which;
+     } else {         
         stopTimeout = millis() + timeout;
      } 
   }; 
@@ -121,9 +127,7 @@ public:
        if (stopTimeout != 0) { 
          if (millis() > stopTimeout) {
            stopTimeout = -1;
-           state = 0;
-           Serial.println ( "Clearing colors" );
-           off();
+           setColor (lastColor);
          }  
        } 
      }
@@ -151,6 +155,7 @@ private:
   int blue = 7;
   int colors[3];
   int colorSelected = 0;
+  int lastColor = green;
   unsigned long stopTimeout = -1;  
   unsigned long cycleTimeout = -1;
   unsigned long cycleFrequency = -1;
